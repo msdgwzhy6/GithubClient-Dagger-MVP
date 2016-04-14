@@ -4,13 +4,13 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-  compileSdkVersion 23
-  buildToolsVersion "23.0.3"
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
 
   defaultConfig {
     applicationId "com.droidcoding.githubclient"
-    minSdkVersion 15
-    targetSdkVersion 23
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
     versionCode 1
     versionName "1.0"
   }
@@ -18,10 +18,21 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
+  dexOptions {
+    javaMaxHeapSize "2048"
+  }
   buildTypes {
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+  productFlavors {
+    production {
+
+    }
+    internal {
+      minSdkVersion 21
     }
   }
 }
@@ -29,6 +40,31 @@ android {
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   testCompile 'junit:junit:4.12'
-  compile 'com.android.support:appcompat-v7:23.3.0'
-  compile 'com.android.support:design:23.3.0'
+
+  // support
+  compile "com.android.support:appcompat-v7:$supportLibVersion"
+  compile "com.android.support:design:$supportLibVersion"
+  compile "com.android.support:recyclerview-v7:$supportLibVersion"
+  compile "com.android.support:gridlayout-v7:$supportLibVersion"
+  compile "com.android.support:support-annotations:$supportLibVersion"
+
+  // Rx
+  compile 'io.reactivex:rxandroid:1.1.0'
+  compile "io.reactivex:rxjava:$rxjavaLibVersion"
+  compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.1'
+
+  // Http
+  compile "com.squareup.retrofit2:retrofit:$retrofitLibVersion"
+  compile "com.squareup.retrofit2:converter-gson:$retrofitLibVersion"
+  compile "com.squareup.retrofit2:adapter-rxjava:$retrofitLibVersion"
+  compile "com.squareup.okhttp3:okhttp:$okhttpLibVersion"
+  compile "com.squareup.okhttp3:logging-interceptor:$okhttpLibVersion"
+
+  // Dagger2
+  compile "com.google.dagger:dagger:$daggerLibVersion"
+  apt "com.google.dagger:dagger-compiler:$daggerLibVersion"
+  provided 'org.glassfish:javax.annotation:10.0-b28'
+
+  compile "com.google.code.gson:gson:$gsonLibVersion"
+  compile 'com.jakewharton.timber:timber:3.1.0'
 }
